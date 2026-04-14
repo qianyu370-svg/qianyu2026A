@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>簡易計算機</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        .card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, select, button { margin: 5px; padding: 8px; font-size: 16px; }
+        #result { margin-top: 15px; font-weight: bold; color: #2c3e50; }
+        .error { color: red !important; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>簡易計算機</h2>
+    
+    <input type="number" id="numX" placeholder="請輸入 x">
+    
+    <select id="opt">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+    </select>
+    
+    <input type="number" id="numY" placeholder="請輸入 y">
+    
+    <button onclick="calculate()">計算</button>
+
+    <div id="result">請輸入數字並點擊計算</div>
+</div>
+
+<script>
+    function calculate() {
+        // 1. 取得數值
+        const x = parseFloat(document.getElementById('numX').value);
+        const y = parseFloat(document.getElementById('numY').value);
+        const opt = document.getElementById('opt').value;
+        const display = document.getElementById('result');
+
+        // 檢查是否輸入了數字
+        if (isNaN(x) || isNaN(y)) {
+            display.innerText = "請輸入有效的數字";
+            display.className = "error";
+            return;
+        }
+
+        let result;
+
+        // 2. 邏輯處理 (對應你的 Python if 與 match 邏輯)
+        if (opt === "/" && y === 0) {
+            display.innerText = "除數不能為零";
+            display.className = "error";
+            return;
+        }
+
+        // JavaScript 的 switch 類似 Python 的 match
+        switch (opt) {
+            case "+": result = x + y; break;
+            case "-": result = x - y; break;
+            case "*": result = x * y; break;
+            case "/": result = x / y; break;
+        }
+
+        // 3. 輸出結果
+        display.innerText = `${x} ${opt} ${y} 的結果是 ${result}`;
+        display.className = ""; // 清除錯誤樣式
+    }
+</script>
+
+</body>
+</html>
