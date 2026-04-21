@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>老師研究室查詢</title>
+</head>
+<body>
+    <h1>靜宜資管 老師查詢系統</h1>
+
+    <form action="/search" method="GET">
+        <label for="teacher_name">請輸入老師姓名關鍵字：</label>
+        <input type="text" id="teacher_name" name="teacher_name" value="{{ keyword }}" placeholder="例如：陳">
+        <button type="submit">開始查詢</button>
+    </form>
+
+    <hr>
+
+    <h3>查詢結果：</h3>
+    <div>
+        {% if result %}
+            <p>{{ result | safe }}</p>
+        {% else %}
+            <p>請輸入關鍵字後點擊查詢。</p>
+        {% endif %}
+    </div>
+
+    <br>
+    <a href="/mis">前往資訊管理導論</a>
+</body>
+</html>
