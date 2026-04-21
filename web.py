@@ -1,3 +1,6 @@
+import requests
+from bs4 import BeautifulSoup
+
 import os
 import json
 import firebase_admin
@@ -32,6 +35,7 @@ def index():
     link += "<a href=/cup>擲筊</a><hr>"
     link += "<a href=/read>讀取Firestore資料(根據lab遞減排序,取前4)</a><br>"
     link += "<a href=/search>搜尋Firestore資料</a><br>"
+    link += "<a href=/movie>查詢即將上映電影</a><hr>"
     return link
 
 @app.route("/read")
@@ -63,9 +67,46 @@ def search():
             Temp = "查無此老師資訊。"
     return render_template("search.html", keyword=keyword,result=Temp)
 
+@app.route("/movie")
+def movie():
+    url = "https://www.atmovies.com.tw/movie/next/"
+    Data = requests.get(url)
+    Data.encoding = "utf-8"
+    sp = BeautifulSoup(Data.text, "html.parser")
+    result = sp.select(".filmListAllX li")
+    
+    R = "<h2>即將上映電影</h2>"
+    for item in result:
+        try:
+            # 抓取電影名稱 (從 img 的 alt 屬性)
+            movie_name = item.find("img").get("alt")
+            # 抓取超連結
+            movie_link = "https://www.atmovies.com.tw" + item.find("a").get("href")
+            R += f"電影名稱：{movie_name}<br>"
+            R += f"介紹連結：<a href='{movie_link}' target='_blank'>{movie_link}</a><br><br>"
+        except:
+            continue # 防止部分結構不全導致錯誤
+    
+    R += "<br><a href=/>回到首頁</a>"
+    return R    
+
 @app.route("/mis")
 def course():
     return "<h1>資訊管理導論</h1><a href=/>回到網站首頁</a>"
+
+@app.route("/sp1")
+def sp1():
+    R = ""
+    url = "https://pyweb2026a-ten.vercel.app/about"
+    Data = requests.get(url)
+    Data.encoding = "utf-8"
+    #print(Data.text)
+    sp = BeautifulSoup(Data.text, "html.parser")
+    result=sp.select("td a")
+
+    for item in result:
+        R += item.text + "<br>" + item.get("href") + "<br><br>"
+    return R    
 
 @app.route("/today")
 def today():
