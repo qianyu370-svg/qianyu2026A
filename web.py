@@ -41,7 +41,7 @@ def index():
     link += "<a href=/rate>本週新片進DB</a><hr>"
     link += "<a href=/road>台中車禍排行</a><hr>"
     link += "<a href=/weather>縣市天氣查詢</a><hr>"
-    link += "<a href=/demo>縣市天氣查詢</a><hr>"
+    link += "<a href=/demo>聊天機器人</a><hr>"
     return link
 
 @app.route("/demo")
